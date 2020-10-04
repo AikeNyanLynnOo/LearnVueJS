@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Modifiers</title>
+    <link rel="stylesheet" href="../main.css" />
+  </head>
+  <body>
+    <h1>Event Modifiers</h1>
+    <pre>
+        .stop
+        .prevent
+        .capture
+        .self
+        .once
+        .passive
+    </pre>
+    <h1>Key Modifiers</h1>
+    <pre>
+        .enter
+        .tab
+        .delete (captures both "Delete" and "Backspace" keys)
+        .esc
+        .space
+        .up
+        .down
+        .left
+        .right
+        .ctrl
+        .alt
+        .shift
+        .meta (window key)
+
+    Mouse Button Modifiers
+
+        .left
+        .right
+        .middle 
+
+        .exact (exactly the specified key to ensure no other key pressed)
+    </pre>
+    <div id="app">
+      <p>Clicking {{counter}} times</p>
+      <form @submit.prevent>
+        <div class="box" @click.self="doThis">
+          Preventing propagation using self from the parent ele
+          <button @click="doThis">Click</button>
+        </div>
+        <div class="box" @click="doThis">
+          Preventing propagation using stop from child ele
+          <button @click.stop="doThis">Click</button>
+        </div>
+        <div class="box" @click.capture="captureByParent">
+          <button @click.once="clickOnce">Click once</button>
+        </div>
+      </form>
+      <input type="text" @keyup.ctrl.c="keyPressed" />
+      <button @dblclick="doubleClicked" @click.right="mouseClicked">
+        Right
+      </button>
+      <!-- Round Brackets are needed for more than one function -->
+      <button @click="func1(),func2()">Run 2 functions</button>
+    </div>
+  </body>
+  <script src="../vue.js"></script>
+  <script>
+    var vue = new Vue({
+      el: "#app",
+      data: {
+        counter: 0,
+      },
+      methods: {
+        doThis: function () {
+          this.counter++;
+        },
+        clickOnce: function () {
+          this.counter++;
+        },
+        captureByParent: function (event) {
+          alert("Captured by Parent Element");
+          event.target.style.backgroundColor = "red";
+        },
+        keyPressed: function () {
+          alert("You copied");
+        },
+        mouseClicked: function (event) {
+          alert("You right clicked");
+        },
+        doubleClicked: function (event) {
+          alert("Double Clicked");
+        },
+        func1 : function (){
+            alert("Hi from function 1");
+        },
+        func2 : function (){
+            alert("Hi from function 2");
+        }
+      },
+    });
+  </script>
+</html>

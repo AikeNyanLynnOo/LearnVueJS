@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dynamic Styling</title>
+    <link rel="stylesheet" href="../main.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div
+        class="square"
+        @click="redAttach = !redAttach"
+        :class="divClasses"
+      ></div>
+      <div class="square" :class="{'red-back' : redAttach}"></div>
+      <!-- <div class="square" :class="color"></div> -->
+      <!-- use color property first ,only if undefined go the next property in array  -->
+      <div class="square" :class="[color,{'red-back':redAttach}]"></div>
+      <!-- merging styles -->
+      <div class="square" :style="[myStyle,{height : width+'px'}]"></div>
+      <input type="text" v-model="color" />
+      <input type="number" v-model="width" />
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+      var vu = new Vue({
+        el: "#app",
+        data: {
+          redAttach: false,
+          color: "pink",
+          width: 100,
+        },
+        computed: {
+          divClasses: function () {
+            return { "red-back": this.redAttach, "blue-back": !this.redAttach };
+          },
+          myStyle: function () {
+            return { backgroundColor: this.color, width: this.width + "px" };
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Computed Properties</title>
+  </head>
+  <body>
+    <pre>
+Computed Property is used no to rerun non using method on every dom update</pre
+    >
+    <pre>Only required method is called</pre>
+    <pre>Dom update cost is reduced</pre>
+    <div id="app">
+      <p>{{counter}} | {{secondCounter}}</p>
+      <p>{{result()}} | {{output}}</p>
+      <button @click="counter++">Increase</button>
+      <button @click="counter--">Decrease</button>
+      <button @click="secondCounter++">Increase Second</button>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+      const vue = new Vue({
+        el: "#app",
+        data: {
+          counter: 0,
+          secondCounter: 0,
+        },
+        computed: {
+          output: function () {
+            console.log("Computed property called");
+            const result =
+              this.counter > 5 ? "Greater than 5" : "Smaller than 5";
+            return result;
+          },
+        },
+        methods: {
+          result() {
+            console.log("Normal method called");
+            const result =
+              this.counter > 5 ? "Greater than 5" : "Smaller than 5";
+            return result;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

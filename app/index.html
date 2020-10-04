@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../main.css" />
+  </head>
+  <body>
+    <div id="app">
+      <input type="text" v-on:input="changeText" />
+      <p v-once>{{text}}</p>
+      <p>{{sayHello()}}</p>
+      <a v-bind:href="youtubeUrl">Youtube</a>
+      <hr />
+      <p v-html="completeLink"></p>
+      <button v-on:click="changeText">Update Text</button>
+      <hr />
+      <p>{{counter}}</p>
+      <button v-on:click="counter++">Increase</button>
+      <hr />
+      <div class="box" v-on:mousemove="trackCoordinates($event,`tracking`)">
+        Coordinates {{x}} / {{y}}
+      </div>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          text: "Hello World",
+          youtubeUrl: "http://www.youtube.com",
+          completeLink: `<a href="http://www.youtube.com">Youtube</a>`,
+          counter: 0,
+          x: 0,
+          y: 0,
+        },
+        methods: {
+          changeText: function (event) {
+            if (event.target.name == "input") {
+              this.text = event.target.value;
+            } else {
+              this.text = "Updated text";
+            }
+          },
+          sayHello: function () {
+            return this.text;
+          },
+          trackCoordinates: function (event, str) {
+            alert(str);
+            this.x = event.clientX;
+            this.y = event.clientY;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
