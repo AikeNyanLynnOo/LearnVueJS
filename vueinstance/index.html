@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Understanding Vue Instance</title>
+  </head>
+  <body>
+    <div id="app1">
+      <p>{{text}}</p>
+      <input type="text" ref="txtInput" v-model="txtInputVal" v-if="show" />
+      <button @click="show = !show">Show / Hide</button>
+    </div>
+    <div id="app2">
+      <p>{{text}}</p>
+      <pre>{{newProp}}</pre>
+      <button @click="changeText">Change Text</button>
+    </div>
+    <div id="app3"></div>
+    <button onclick="mountApp3()">Mount App3</button>
+    <script src="../vue.js"></script>
+    <script>
+      const timeoutID = setTimeout(() => {
+        app2.changeText();
+        app2.newProp = "new property"; // error newProp undefined, but still possible
+        console.log(app2);
+        console.log(app2._data.text, app2._data.newProp);
+        console.log(app2._data == data);
+        app1.$refs.txtInput.value = "Inserted using $ref property";
+      }, 3000);
+      const app1 = new Vue({
+        el: "#app1",
+        data: {
+          text: "first instance",
+          txtInputVal: "Original Input Value",
+          show: true,
+        },
+        methods: {
+          toUpperCase(txt) {
+            return txt.toUpperCase();
+          },
+        },
+      });
+      const data = {
+        text: "second instance",
+      };
+      const app2 = new Vue({
+        el: "#app2",
+        data: data,
+        methods: {
+          changeText: function () {
+            this.text = app1.toUpperCase(app1.text);
+          },
+        },
+      });
+      console.log(app2.$data == data);
+      const app3 = new Vue({
+        template: "<h1>Hello</h1>",
+      });
+      mountApp3 = (event) => {
+        // app3.$mount("#app3"); // finds "#app3" on every click, second click will be error
+        app3.$mount();
+        document.querySelector("#app3").appendChild(app3.$el); // better practice
+      };
+    </script>
+  </body>
+</html>

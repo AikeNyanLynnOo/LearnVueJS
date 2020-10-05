@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monster Slayer</title>
+    <link rel="stylesheet" href="../main.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div class="bar" :style="{width:40*(player/100)+'%'}">{{player}}</div>
+      <div class="bar" :style="{width:40*(monster/100)+'%'}">{{monster}}</div>
+      <div class="log-panel">
+        <template v-for="damages in log">
+          <pre v-for="damage in damages">{{damage}}</pre>
+        </template>
+      </div>
+      <button @click="attack">Attack</button>
+      <button @click="attack(true)">Huge Attack</button>
+      <button @click="heal">Heal</button>
+      <button @click="restart">Restart</button>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+      var vue = new Vue({
+        el: "#app",
+        data: {
+          player: 100,
+          monster: 100,
+          healCount: 0,
+          log: [],
+        },
+        watch: {
+          player: function (finalValue) {
+            if (finalValue <= 0) {
+              if (this.monster > finalValue) {
+                alert("You lose");
+              } else if (finalValue == this.monster) {
+                alert("Tie up");
+              } else {
+                alert("You win");
+              }
+            }
+          },
+          monster: function (finalValue) {
+            if (finalValue <= 0) {
+              if (this.player > finalValue) {
+                alert("You win");
+              } else if (finalValue == this.player) {
+                alert("Tie up");
+              } else {
+                alert("You lose");
+              }
+            }
+          },
+          healCount(finalValue) {
+            if (finalValue > 3) {
+              alert("You lose");
+            }
+          },
+        },
+        methods: {
+          attack: function (isHugeAttack = false) {
+            let p = 6;
+            let m = 5;
+            if (isHugeAttack) {
+              p = 11;
+              m = 10;
+            }
+            const pDamage = this.getRandomDamage() + p;
+            const mDamage = this.getRandomDamage() + m;
+            this.player -= pDamage;
+            this.monster -= mDamage;
+            this.log.unshift({
+              player: `player is damaged by ${pDamage}`,
+              monster: `monster is damaged by ${mDamage}`,
+            });
+          },
+          restart: function () {
+            this.player = 100;
+            this.monster = 100;
+            this.log = [];
+          },
+          heal: function () {
+            this.healCount++;
+            const heal = this.getRandomDamage() + 5;
+            this.player += heal;
+            this.log.push({
+              player: `player is healed by ${heal}`,
+            });
+          },
+          getRandomDamage() {
+            const damage = Math.ceil(Math.random() * 10);
+            return damage;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

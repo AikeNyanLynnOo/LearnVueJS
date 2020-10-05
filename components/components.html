@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Components</title>
+  </head>
+  <body>
+    <div id="app1">
+      <hello></hello>
+      <app1-cmp></app1-cmp>
+    </div>
+    <hr />
+    <div id="app2">
+      <hello></hello>
+      <app2-cmp></app2-cmp>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+      // component registered globally - gives different objects for each usage - not same memory location
+      Vue.component("hello", {
+        data: function () {
+          return {
+            greetingTxt: "Hello from global component",
+          };
+        },
+        template:
+          "<div><p>Status : {{greetingTxt}}</p> <button @click='changeText'>Change Text</button></div>",
+        methods: {
+          changeText: function () {
+            this.greetingTxt = "Hey from global component";
+          },
+        },
+      });
+
+      const app1Data = {
+        text: "app1",
+      };
+
+      const app1Cmp = {
+        data() {
+          return app1Data;
+        },
+        template:
+          "<div><p>Status : {{text}}</p> <button @click='update'>Change Text</button></div>",
+        methods: {
+          update: function () {
+            this.text = this.text.toUpperCase();
+          },
+        },
+      };
+
+      const app2Cmp = {
+        data() {
+          // return app1Data; // reflect - because of same memory location
+          return {
+            text: "app2",
+          };
+        },
+        template:
+          "<div><p>Status : {{text}}</p> <button @click='update'>Change Text</button></div>",
+        methods: {
+          update: function () {
+            this.text = this.text.toUpperCase();
+          },
+        },
+      };
+
+      new Vue({
+        el: "#app1",
+        components: {
+          "app1-cmp": app1Cmp,
+        },
+      });
+
+      new Vue({
+        el: "#app2",
+        components: {
+          "app2-cmp": app2Cmp,
+        },
+      });
+    </script>
+  </body>
+</html>

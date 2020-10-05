@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>Fruits</h1>
+      <!-- adding :key attribute is a good practice -->
+      <ul>
+        <li v-for="fruit in fruits" :key="fruit">{{fruit}}</li>
+      </ul>
+      <h1>People</h1>
+      <ul>
+        <li v-for="person,i in people" :key="person">
+          <div v-for="value,key,index in person" :key="key+value">
+            {{index}} - {{key}} : {{value}}
+          </div>
+        </li>
+      </ul>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+      var vu = new Vue({
+        el: "#app",
+        data: {
+          fruits: ["orange", "apple", "banana", "grape"],
+          people: [
+            { name: "aung aung", age: 21, job: "Student" },
+            {
+              name: "su su",
+              age: 22,
+              job: "Software Developer",
+            },
+          ],
+        },
+      });
+    </script>
+  </body>
+</html>

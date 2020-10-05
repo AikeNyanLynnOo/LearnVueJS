@@ -6,6 +6,23 @@
     border : 1px solid pink;
     border-radius: 2px;
 }
+.bar{
+    width : 40%;
+    margin : auto;
+    height : 50px;
+    margin-bottom: 20px;
+    background-color: chartreuse;
+    border : 1px solid black;
+    transition: width 500ms;
+}
+.log-panel{
+    width: 50%;
+    margin : auto;
+    height : 300px;
+    background-color: darkgray;
+    border:1px solid black;
+    overflow-y : scroll;
+}
 .square {
     width : 100px;
     height : 100px;
