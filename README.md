@@ -72,5 +72,32 @@
 
 
 - Vue Components -
+- see component_communication -
+    Data property should be a function - that returns the data as an object
+    
+    Data communication should be cared for object sending from parent to child - the whole object is recommended to sent - i.e. Don't send only a value without key 
 
-Data property should be a function - that returns the data as an object
+    For sending reference types (arrays and objects), change from child component is automatically reflected - because same memory location
+
+    For sending primitive types (string and numbers), change from chiled component won't reflect to the parent component (* but reflect in parent -> child) - because different memory location. The value is copied from parent to child.
+
+    If we want to send back the updated value from child to parent, should emit an event. 
+
+    3 possible ways of updating data back to parent 
+    - using reference types - so auto-update available
+    - using primitive types - but emitting events
+    - using props functions - passed from parent to child
+
+    4 possible ways of child to child communication
+    - using reference types - child->parent->sibling
+    - emitting event        - child->parent->sibling
+    - using props functions - child->parent->sibling
+    - event bus             - child->child 
+
+
+    ** Important **
+    Every change to the parent's property rerender the whole parent template
+    Be aware - even if only one property change in parent may result changes in other properties in children
+    This is because - we transfer the properties to the children by binding in the parent's template
+    The parent's template is rerendered and the properties are overwritten.
+    Use data property or computed property to prevent rerendering in child template.
