@@ -101,3 +101,17 @@
     This is because - we transfer the properties to the children by binding in the parent's template
     The parent's template is rerendered and the properties are overwritten.
     Use data property or computed property to prevent rerendering in child template.
+
+- Advanced Component Usage -
+    Slot - carry all contents including dynamic data - benefit is no need to bind data and send
+    Default element is allowed inside slot
+
+    Replace by <p> when slot="text" was not supplied 
+    <slot name="text">
+        <p>text inside slot</p>
+    </slot> 
+
+    Using slots, can execute any function from parent is possible 
+    For example, passing button holding a parent's function to child
+    
+    Styling for the same element - if no child modification, style from parent works, but if child modification occurs, style from child overwrites parent.
