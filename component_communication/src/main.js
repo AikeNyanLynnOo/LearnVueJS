@@ -1,6 +1,7 @@
 import Vue from "vue";
 import App from "./App.vue";
 import AdvCmp from "./AdvCmp.vue";
+import QuotePanel from './QuotePanel.vue';
 
 export const eventBus = new Vue({
   methods: {
@@ -23,3 +24,10 @@ new Vue({
     return h(AdvCmp);
   }
 });
+
+new Vue({
+  el : '#main',
+  render : h=>{
+    return h(QuotePanel);
+  }
+})
