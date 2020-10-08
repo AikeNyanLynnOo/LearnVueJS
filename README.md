@@ -115,3 +115,29 @@
     For example, passing button holding a parent's function to child
     
     Styling for the same element - if no child modification, style from parent works, but if child modification occurs, style from child overwrites parent.
+
+- Form Control - https://jsfiddle.net/AikeNyanLynnOo/1hfan4gd/
+
+    v-model - for two way binding
+
+    <!-- `picked` is a string "a" when checked -->
+    <input type="radio" v-model="picked" value="a">
+
+    <!-- `toggle` is either true or false -->
+    <input type="checkbox" v-model="toggle">
+
+    <!-- `selected` is a string "abc" textContent is not treated as value -->
+    <select v-model="selected">
+    <option value="abc">ABC</option>
+    </select>
+
+    If option-value is not supported, the textContent is used as value - in above case 'ABC'
+    Use multiple attibute in select for multiple select
+    Name attribute is no longer needed in form elements for data-binding
+
+    For only one radio or checkbox - no value attribute is given, value is true/false for checkbox and no value is generated for radio
+ 
+    modifiers - .lazy, .number(typecast), .trim
+
+
+
