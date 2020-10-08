@@ -30,47 +30,6 @@
     beforeDestroy()
     destroyed()    
 
-
-- Vue cli -
-    Instead of render method
-
-    1) Using the ES6 Spread Operator (for that, you need to add babel-preset-stage-2 as a Dependency and to your .babelrc File):
-
-    npm install --save-dev babel-preset-stage-2 
-
-    .babelrc:
-
-    {
-    "presets": [
-        ["es2015", { "modules": false }],
-        ["stage-2"]
-    ]
-    }
-
-
-    import Vue from 'vue'
-    import App from './App.vue'
-
-    new Vue({
-    el: '#app',
-    ...App
-    });
-
-
-    2) Using mount() :
-
-    Also install the stage-2 preset as described above.
-
-    import Vue from 'vue'
-    import App from './App.vue'
-
-    const vm = new Vue({
-    ...App
-    });
-
-    vm.$mount('#app');    
-
-
 - Vue Components -
 - see component_communication -
     Data property should be a function - that returns the data as an object
@@ -106,11 +65,8 @@
     Slot - carry all contents including dynamic data - benefit is no need to bind data and send
     Default element is allowed inside slot
 
-    Replace by <p> when slot="text" was not supplied 
-    <slot name="text">
-        <p>text inside slot</p>
-    </slot> 
-
+    Replace by supported when slot="text" was not supplied 
+    
     Using slots, can execute any function from parent is possible 
     For example, passing button holding a parent's function to child
     
@@ -120,18 +76,8 @@
 
     v-model - for two way binding
 
-    <!-- `picked` is a string "a" when checked -->
-    <input type="radio" v-model="picked" value="a">
 
-    <!-- `toggle` is either true or false -->
-    <input type="checkbox" v-model="toggle">
-
-    <!-- `selected` is a string "abc" textContent is not treated as value -->
-    <select v-model="selected">
-    <option value="abc">ABC</option>
-    </select>
-
-    If option-value is not supported, the textContent is used as value - in above case 'ABC'
+    If option-value is not supported, the textContent is used as value 
     Use multiple attibute in select for multiple select
     Name attribute is no longer needed in form elements for data-binding
 
