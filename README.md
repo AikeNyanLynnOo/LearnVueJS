@@ -85,5 +85,15 @@
  
     modifiers - .lazy, .number(typecast), .trim
 
+- Directives - 
+    bind: called only once, when the directive is first bound to the element. This is where you can do one-time setup work.
 
+    inserted: called when the bound element has been inserted into its parent node (this only guarantees parent node presence, not necessarily in-document).
 
+    update: called after the containing component’s VNode has updated
+
+    componentUpdated: called after the containing component’s VNode and the VNodes of its children have updated.
+
+    unbind: called only once, when the directive is unbound from the element.
+
+    

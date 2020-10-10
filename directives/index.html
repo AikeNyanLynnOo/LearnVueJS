@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Directives</title>
+    <link rel="stylesheet" href="../main.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div>
+        <h1>Built in directives</h1>
+        <p v-text="text"></p>
+        <pre v-html="'<strong>Strong text</strong>'"></pre>
+      </div>
+      <hr />
+      <div>
+        <h1>Custom directives</h1>
+        <p v-hightlight:background-color.delayed.3000="'green'">
+          hightlighted text
+        </p>
+        <p
+          v-local-hightlight:delayed.blink="{mainColor : 'green', secondColor : 'red'}"
+        >
+          local hightlighted text
+        </p>
+      </div>
+      <hr />
+      <div>
+        <h1>Dynamic Directives</h1>
+        <p v-pin:[direction]="200">
+          This text is sticked 200px from the left edge
+        </p>
+      </div>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+      Vue.directive("hightlight", {
+        bind(el, binding, vnode) {
+          console.log("bind()");
+          console.log(binding);
+          const modifiers = Object.keys(binding.modifiers);
+          //   el.style.backgroundColor = binding.value;
+          let delay = 0;
+
+          if (binding.modifiers["delayed"] && binding.modifiers["3000"]) {
+            delay = +modifiers[modifiers.indexOf("3000")];
+          }
+          setTimeout(() => {
+            if (binding.arg === "background-color") {
+              el.style.backgroundColor = binding.value;
+            } else {
+              el.style.color = binding.value;
+            }
+          }, delay);
+        },
+        inserted(el, binding, vnode) {
+          console.log("inserted()");
+        },
+        update(el, binding, vnode, oldNode) {
+          console.log("updated()");
+        },
+        componentUpdated(el, binding, vnode, oldNode) {
+          console.log("componentUpdated()");
+        },
+        unbind(el, binding, vnode) {
+          console.log("unbind()");
+        },
+      });
+      new Vue({
+        el: "#app",
+        data: {
+          text: "Hello",
+          direction: "left",
+          dirName: "fontStyle",
+        },
+        directives: {
+          "local-hightlight": {
+            bind(el, binding, vnode) {
+              console.log("bind()");
+              console.log(binding.value);
+              if (binding.modifiers["blink"]) {
+                let mainColor = binding.value["mainColor"];
+                let secondColor = binding.value["secondColor"];
+                el.style.color = "#fff";
+                setInterval(() => {
+                  mainColor =
+                    mainColor == binding.value["mainColor"]
+                      ? secondColor
+                      : binding.value["mainColor"];
+                  el.style.backgroundColor = mainColor;
+                }, 100);
+              }
+            },
+            inserted(el, binding, vnode) {
+              console.log("inserted()");
+            },
+            update(el, binding, vnode, oldNode) {
+              console.log("updated()");
+            },
+            componentUpdated(el, binding, vnode, oldNode) {
+              console.log("componentUpdated()");
+            },
+            unbind(el, binding, vnode) {
+              console.log("unbind()");
+            },
+          },
+          pin: {
+            bind(el, binding, vnode) {
+              el.style.position = "fixed";
+              el.style[binding.arg] = binding.value + "px";
+              el.style.backgroundColor = "blueviolet";
+              el.style.color = "#fff";
+            },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
