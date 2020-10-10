@@ -7,18 +7,18 @@
   </head>
   <body>
     <div id="app1">
-      <hello></hello>
+      <hello-world></hello-world>
       <app1-cmp></app1-cmp>
     </div>
     <hr />
     <div id="app2">
-      <hello></hello>
+      <hello-world></hello-world>
       <app2-cmp></app2-cmp>
     </div>
     <script src="../vue.js"></script>
     <script>
       // component registered globally - gives different objects for each usage - not same memory location
-      Vue.component("hello", {
+      Vue.component("hello-world", {
         data: function () {
           return {
             greetingTxt: "Hello from global component",

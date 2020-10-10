@@ -97,3 +97,26 @@
     unbind: called only once, when the directive is unbound from the element.
 
     
+- Filters -
+
+    Filters transform the format user see, not the data 
+    Filters does not rerender the element 
+    No longer supported in vue 3.0
+
+- Mixins - 
+
+    Centerate the duplicte properties
+    Merge the local properties to the mixin
+    Lifecycle - mixin first, host component later
+
+    *** Mixins are created as the order in the array list of host element
+    Accessing data property of second mixin by the first mixin is possible - but not methods properties
+    Because, methods from second mixin have not already been registered 
+    Accessing a method property of first mixin by the second mixin is possible - because first mixin has already been created and its methods are registered
+
+    1. Property names in using mixins should be unique - recommended
+    2. Access only pre-created mixin's property - nor Error encountered.
+
+    Global Mixin - created everytime new vue instance is created
+    Use to ship business logic in other apps
+

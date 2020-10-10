@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mixins</title>
+  </head>
+  <body>
+    <div id="app1">
+      <h3>
+        Component 1 data property includes
+        <span v-for="key in Object.keys($data)"> {{key}} |</span>
+      </h3>
+
+      <p>{{text}}</p>
+      <input type="text" v-model="filterText" />
+      <ul>
+        <li v-for="fruit in filteredFruits" :key="fruit">{{fruit}}</li>
+      </ul>
+    </div>
+    <hr />
+    <div id="app2">
+      <h3>
+        Component 2 data property includes
+        <span v-for="key in Object.keys($data)"> {{key}} |</span>
+      </h3>
+      <input type="text" v-model="filterText" />
+      <ul>
+        <li v-for="fruit in filteredFruits" :key="fruit">{{fruit}}</li>
+      </ul>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+      Vue.mixin({
+        created() {
+          console.log("Global mixin hook");
+        },
+      });
+    </script>
+    <script>
+      const commonProperties = {
+        data: function () {
+          return {
+            greetText: "Greeting from mixin 1",
+            fruits: ["Apple", "Mango", "Banana", "Grape", "Orange"],
+            filterText: "",
+          };
+        },
+        computed: {
+          filteredFruits: function () {
+            return this.fruits.filter((fruit, idx, fruits) => {
+              return fruit.toLowerCase().match(this.filterText.toLowerCase());
+            });
+          },
+        },
+        methods: {
+          sayGreet: function () {
+            return this.greetText;
+          },
+        },
+        created() {
+          console.log("mixin created");
+          console.log(this.text); // hello - property of host component
+          console.log(this.textHi); // Hi - property of second mixin
+          console.log(this.greet()); // Error - mixin 2 has not already been created
+        },
+      };
+
+      const secondMixin = {
+        data: function () {
+          return {
+            textHi: "Hi",
+          };
+        },
+        methods: {
+          greet() {
+            return this.greetText;
+          },
+        },
+        created() {
+          console.log("Second Mixin is created");
+          console.log(this.sayGreet()); // "Greeting from mixin 1" - mixin 1 has already been created
+        },
+      };
+    </script>
+    <script>
+      const app1 = new Vue({
+        el: "#app1",
+        data: function () {
+          return {
+            text: "hello",
+          };
+        },
+        mixins: [commonProperties, secondMixin],
+        created() {
+          console.log("component 1 created");
+          console.log(this.greet());
+        },
+      });
+
+      const app2 = new Vue({
+        el: "#app2",
+        mixins: [commonProperties],
+        created() {
+          console.log("component 2 created");
+        },
+      });
+    </script>
+  </body>
+</html>

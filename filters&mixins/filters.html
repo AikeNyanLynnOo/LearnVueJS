@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Filters</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>Filters</h1>
+      <!-- upper-case or upperCase - both work -->
+      <p>{{ text | upper-case}}</p>
+      <button @click="text='New text'">Change Text</button>
+      <input type="text" v-model="filterText" />
+      <ul>
+        <li v-for="fruit in filteredFruits">{{fruit}}</li>
+      </ul>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+      Vue.filter("lower-case", (value) => {
+        return value.toLowerCase();
+      });
+      const app1 = new Vue({
+        el: "#app",
+        data: function () {
+          return {
+            text: "hello",
+            fruits: ["Apple", "Mango", "Banana", "Grape", "Orange"],
+            filterText: "",
+          };
+        },
+        filters: {
+          upperCase: function (value) {
+            return value.toUpperCase();
+          },
+        },
+        computed: {
+          filteredFruits: function () {
+            return this.fruits.filter((fruit, idx, fruits) => {
+              return fruit.toLowerCase().match(this.filterText.toLowerCase());
+            });
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
