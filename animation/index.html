@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animations</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <style>
+      .fade-enter {
+        opacity: 0;
+      }
+      .fade-enter-active {
+        transition: opacity 1s;
+      }
+      .fade-leave {
+        /* opacity : 1; */
+      }
+      .fade-leave-active {
+        transition: opacity 1s;
+        opacity: 0;
+      }
+      .slide-enter {
+        opacity: 0;
+      }
+      .slide-enter-active {
+        animation: slide-in 1s ease-out forwards;
+        transition: opacity 1s;
+      }
+      .slide-leave {
+      }
+      .slide-leave-active {
+        animation: slide-out 1s ease-out forwards;
+        transition: opacity 3s;
+        opacity: 0;
+        position: absolute;
+      }
+      .slide-move {
+        transition: transform 1s;
+      }
+      @keyframes slide-in {
+        from {
+          transform: translateY(20px);
+        }
+        to {
+          transform: translateY(0);
+        }
+      }
+      @keyframes slide-out {
+        from {
+          transform: translateY(0);
+        }
+        to {
+          transform: translateY(20px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app" class="container">
+      <select v-model="animationType">
+        <option value="animate__animated animate__bounce">Bounce</option>
+        <option value="animate__animated animate__shakeX">Shake</option>
+      </select>
+      <button class="btn btn-primary" @click="show=!show">Show/Hide</button>
+      <transition name="fade">
+        <p class="alert alert-info" v-if="show">Some text here</p>
+      </transition>
+      <!-- killing later transition once the animation finishes -->
+      <transition name="slide" type="animation">
+        <p class="alert alert-info" v-if="show">Some text here</p>
+      </transition>
+      <!-- appear with transition on document load - if show is true -->
+      <transition name="slide" type="animation" appear>
+        <p class="alert alert-info" v-if="show">Some text here</p>
+      </transition>
+      <!-- appear does not work with custom class -->
+      <transition
+        :enter-active-class="animationType"
+        :leave-active-class="animationType"
+      >
+        <p class="alert alert-info" v-if="show">Some text here</p>
+      </transition>
+      <!-- without key - does not work - or use component-->
+      <transition name="slide" type="animation" mode="out-in">
+        <p class="alert alert-info" v-if="show" key="info">Info text</p>
+        <p class="alert alert-warning" v-else key="warning">Warning text</p>
+      </transition>
+      <hr />
+      <button class="btn btn-primary" @click="load = !load">
+        Load / Remove
+      </button>
+      <br />
+      <br />
+      <transition
+        @before-enter="beforeEnter"
+        @enter="enter"
+        @after-enter="afterEnter"
+        @enter-cancelled="enterCancelled"
+        @before-leave="beforeLeave"
+        @leave="leave"
+        @after-leave="afterLeave"
+        @leave-cancelled="leaveCancelled"
+        :css="false"
+      >
+        <div
+          style="width: 300px; height: 30px; background-color: lightblue"
+          v-if="load"
+        ></div>
+      </transition>
+      <br />
+      <button
+        class="btn btn-success"
+        @click="isSelected == 'appSuccess' ? isSelected = 'appError' : isSelected = 'appSuccess'"
+      >
+        Toggle
+      </button>
+      <transition name="fade" mode="out-in">
+        <component :is="isSelected"></component>
+      </transition>
+      <br />
+      <button @click="addItem" class="btn btn-info">Add Item</button>
+      <br />
+      <ul class="list-group">
+        <transition-group name="slide" type="animation">
+          <li
+            class="list-group-item"
+            v-for="(number,index) in numbers"
+            :key="number"
+            @click="removeItem(index)"
+          >
+            {{number}}
+          </li>
+        </transition-group>
+      </ul>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+      const Success = {
+        template: '<div class="alert alert-success">Success</div>',
+      };
+      const Error = {
+        template: '<div class="alert alert-danger">Error</div>',
+      };
+    </script>
+    <script>
+      const app = new Vue({
+        el: "#app",
+        data() {
+          return {
+            show: false,
+            load: false,
+            animationType: "animate__animated animate__bounce",
+            isSelected: "appSuccess",
+            numbers: [1, 2, 3, 4, 5],
+          };
+        },
+        components: {
+          appSuccess: Success,
+          appError: Error,
+        },
+        methods: {
+          beforeEnter(el) {
+            console.log("beforeEnter");
+            this.elementWidth = 100;
+            el.style.width = this.elementWidth + "px";
+          },
+          enter(el, done) {
+            console.log("enter");
+            const interval = setInterval(() => {
+              if (this.elementWidth >= 500) {
+                clearInterval(interval);
+                done();
+              } else {
+                this.elementWidth += 10;
+                el.style.width = this.elementWidth + "px";
+              }
+            }, 10);
+          },
+          afterEnter(el) {
+            console.log("afterEnter");
+          },
+          enterCancelled(el) {
+            console.log("enterCancelled");
+          },
+
+          beforeLeave(el) {
+            console.log("beforeLeave");
+          },
+          leave(el, done) {
+            console.log("leave");
+            const interval = setInterval(() => {
+              if (this.elementWidth <= 1) {
+                clearInterval(interval);
+                done();
+              } else {
+                this.elementWidth -= 10;
+                el.style.width = this.elementWidth + "px";
+              }
+            }, 10);
+          },
+          afterLeave(el) {
+            console.log("afterLeave");
+          },
+          leaveCancelled(el) {
+            console.log("leaveCancelled");
+          },
+          addItem() {
+            const pos = Math.floor(Math.random() * this.numbers.length);
+            this.numbers.splice(pos, 0, this.numbers.length + 1);
+          },
+          removeItem(index) {
+            this.numbers.splice(index, 1);
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

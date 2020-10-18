@@ -7,19 +7,15 @@
 - Vue Instance -
     Creating new property in vue instance is possible, but that property will not be under _data/$data object. So we should not do that.
     Updating Dom using $ref property may be overwritten by the next Dom update, because it is directly to the Dom and not reactive to the vue instance 
-
     Components should be declared topmost section
     Components tag don't work outsite of the vue instance tag - component tags should be within one of the vue instance tags
-
     Vue instance generate the html code either directly from the el property we given or the template property which can be provided.
-
     If we use the template property, we should later mount the instance - defining where we should place our template 
-
     VueJs generates a virtual Dom, and then write to real Dom.
     In every change the whole virtual Dom is regenerated, but not to the real Dom. 
     VueJs watches the difference between the virtual and real Dom and update only the changed part.
     So becomes VueJs fast.
-
+        
 - Vue Instance Life Cycle - 
     beforeCreate()
     created()
@@ -120,3 +116,13 @@
     Global Mixin - created everytime new vue instance is created
     Use to ship business logic in other apps
 
+- Animations -
+
+    Transition - only should use to animate pre-rendered html element, i.e., not for newly created elements by js code
+
+    Using name and css class - eg. name="*"
+    *-enter, *-enter-active, *-leave, *-leave-active
+    Using class attributes 
+    enter-class, enter-active-class, leave-class, leave-active-class
+    Using transition lifecycle events and make styles by js - (:css="false") must be given
+    @before-enter, @enter, @after-enter, @enter-cancelled, @before-leave, @leave, @after-leave, @leave-cancelled
