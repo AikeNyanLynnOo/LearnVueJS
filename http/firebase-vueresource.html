@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Firebase VueResource App</title>
+    <style>
+      html {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      h1 {
+        text-align: center;
+      }
+      .wrap {
+        width: 40%;
+        margin: 1em auto;
+      }
+      form {
+        padding: 2em 1em;
+        border: 1px solid #ddd;
+        box-shadow: 2px 2px 1px #ddd;
+        border-radius: 5px;
+      }
+      form > input {
+        display: block;
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+        font-size: medium;
+        width: 85%;
+        margin-top: 1em;
+        margin-bottom: 2em;
+        margin-left: auto;
+        margin-right: auto;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      form > label {
+        display: block;
+        width: 85%;
+        margin: 0 auto;
+      }
+      .btn-group {
+        width: 30%;
+        margin: 0 auto;
+        display: flex;
+      }
+      .btn-submit {
+        display: block;
+        width: 200px;
+        margin: 0 5px;
+        height: 2.5em;
+        cursor: pointer;
+        font-size: medium;
+        background-color: lightskyblue;
+        border: 1px solid lightskyblue;
+        border-radius: 3px;
+      }
+      .btn-submit:focus,
+      form > input:focus {
+        outline: none;
+      }
+
+      .data-list {
+        list-style-type: none;
+        padding: 0;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        font-size: small;
+      }
+      .data-list li {
+        padding: 0.5em 1em;
+        line-height: 2em;
+        height: 2em;
+        border-bottom: 1px solid #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Http Request</h1>
+    <div class="wrap" id="app">
+      <form @submit.prevent>
+        <label for="username">Enter Username</label>
+        <input type="text" id="username" v-model="user.username" />
+        <label for="email">Enter Email</label>
+        <input type="email" id="email" v-model="user.email" />
+        <input
+          type="text"
+          v-model="node"
+          placeholder="Enter node to get data"
+        />
+        <div class="btn-group">
+          <button class="btn-submit" @click="submit">Submit</button>
+          <button class="btn-submit" @click="getData">Get</button>
+        </div>
+      </form>
+      <ul class="data-list">
+        <li v-for="(data,index) in dataList" :key="index">
+          {{data.username}}-{{data.email}}
+        </li>
+      </ul>
+    </div>
+
+    <script src="../vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+    <script>
+      Vue.http.options.root = "https://vue-test-95330.firebaseio.com";
+      const app = new Vue({
+        el: "#app",
+        data() {
+          return {
+            user: {
+              username: "",
+              email: "",
+            },
+            dataList: [],
+            resource: {},
+            node: "data",
+          };
+        },
+        methods: {
+          submit: async function (event) {
+            // const response = await this.$http.post("", this.user);
+            // this.resource.save({}, this.user);
+            this.resource.saveAlt(this.user);
+          },
+          getData: async function (event) {
+            this.dataList = [];
+            // const response = await this.$http.get("data.json");
+            const response = await this.resource.getData({ node: this.node });
+            const data = await response.json();
+            for (user in data) {
+              this.dataList.push(data[user]);
+            }
+          },
+        },
+        created() {
+          // this.$resource(default_url, data object, custom_operations)
+          const customActions = {
+            saveAlt: {
+              method: "POST",
+              url: "alternative.json",
+            },
+            getData: {
+              method: "GET",
+            },
+          };
+          this.resource = this.$resource("{node}.json", {}, customActions);
+        },
+      });
+    </script>
+  </body>
+</html>
