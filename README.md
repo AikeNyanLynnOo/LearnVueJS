@@ -126,3 +126,37 @@
     enter-class, enter-active-class, leave-class, leave-active-class
     Using transition lifecycle events and make styles by js - (:css="false") must be given
     @before-enter, @enter, @after-enter, @enter-cancelled, @before-leave, @leave, @after-leave, @leave-cancelled
+
+- Routing - 
+    Component will not be recreated on calling same component by itself
+    To track params changes, write watcher for $route
+
+    *** Component is recreated on calling by the parent component - no need watcher - params are auto-updated and component is recreate.
+
+    Without backslash,route path is appended. Otherwise, route path is replaced. 
+    All routes are based on the parent component's route.
+
+    To ways to navigate routes
+    - using 'to' attribute
+    - using $router.push() method
+
+    Naming routes is a good practice because we can concern on the params or query
+
+    Router views also should be named to make a certain component loaded to that router view area.
+
+    BeforeRoute Guards - Good place to check authentication 
+    BeforeRouteEnter hook of a component is the very first executed hook before component is created. So no data cannot be accessed since created hook has not also been executed.
+    Call next() method inside beforeRouteEnter hook to continue component creation.
+
+    3 places to configure before route guards
+    - beforeEach() -> global before route hook which runs before every route
+    - beforeEnter() -> configure inside route configuration
+    - beforeRouteEnter() -> configure inside the component as a lifecycle hook
+
+    BeforeRouteLeave and BeforeRouteUpdate are only available inside components
+    BeforeRouteUpdate can be used instead of watchers to update the route param data
+
+    AfterRoute Guards 
+    - afterEach() - global
+    - beforeRouteUpdate() - inside component
+    - beforeRouteLeave() - inside component
