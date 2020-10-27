@@ -137,8 +137,8 @@
     All routes are based on the parent component's route.
 
     To ways to navigate routes
-    - using 'to' attribute
-    - using $router.push() method
+    - Using 'to' attribute
+    - Using $router.push() method
 
     Naming routes is a good practice because we can concern on the params or query
 
@@ -160,3 +160,22 @@
     - afterEach() - global
     - beforeRouteUpdate() - inside component
     - beforeRouteLeave() - inside component
+
+    Vuex
+    - Reupdate(not rerender, update only the place where state is used) all components if state property changes which is used by those components
+    - Use 'getters' for getting state value (mapGetters in component)
+    - Using getters avoid problems of data accessing since we use complex structure with modules where directly accessing state property's name is difficult.
+    - Using getters avoids accidentally changing state by the component since we store data in computed property within components
+    - Using set() method within computed property to make changes back to global state
+    - Use 'mutations' for centralizing operations and logic on state properties (mapMutations in component)
+    - Mutations are synchronous - run in single thread
+    - Use 'actions' (where we may write async code) to get asynchronous behavior before commiting mutations - mapActions in component
+    - Default payload for mutations and actions is Mouse Event Object
+    - If we want to use payloads, we must pass it when calling function in component
+    - Only one payload is allowed, for more, use object
+    - Duplicate method names are not allowed in vuex store object
+    - Use types to avoid duplication
+
+    - mapGetters/mapMutuations/mapActions accept both [] and {}
+    - [] is for name mapping where function name is mapped directly
+    - {} is for type mapping where function name is defined by unique type - eg {customkeyk : type}
