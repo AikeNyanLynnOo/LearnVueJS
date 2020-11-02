@@ -1,0 +1,142 @@
+{
+    "email": {
+        "required": false,
+        "email": true,
+        "$model": "",
+        "$invalid": true,
+        "$dirty": false,
+        "$anyDirty": false,
+        "$error": false,
+        "$anyError": false,
+        "$pending": false,
+        "$params": {
+            "required": {
+                "type": "required"
+            },
+            "email": {
+                "type": "email"
+            }
+        }
+    },
+    "age": {
+        "required": false,
+        "numeric": true,
+        "minVal": true,
+        "$model": null,
+        "$invalid": true,
+        "$dirty": false,
+        "$anyDirty": false,
+        "$error": false,
+        "$anyError": false,
+        "$pending": false,
+        "$params": {
+            "required": {
+                "type": "required"
+            },
+            "numeric": {
+                "type": "numeric"
+            },
+            "minVal": {
+                "type": "minValue",
+                "min": 18
+            }
+        }
+    },
+    "password": {
+        "required": false,
+        "minLen": true,
+        "$model": "",
+        "$invalid": true,
+        "$dirty": false,
+        "$anyDirty": false,
+        "$error": false,
+        "$anyError": false,
+        "$pending": false,
+        "$params": {
+            "required": {
+                "type": "required"
+            },
+            "minLen": {
+                "type": "minLength",
+                "min": 6
+            }
+        }
+    },
+    "confirmPassword": {
+        "sameAs": true,
+        "$model": "",
+        "$invalid": false,
+        "$dirty": false,
+        "$anyDirty": false,
+        "$error": false,
+        "$anyError": false,
+        "$pending": false,
+        "$params": {
+            "sameAs": {
+                "type": "sameAs",
+                "eq": "password"
+            }
+        }
+    },
+    "terms": {
+        "required": true,
+        "$model": false,
+        "$invalid": false,
+        "$dirty": false,
+        "$anyDirty": false,
+        "$error": false,
+        "$anyError": false,
+        "$pending": false,
+        "$params": {
+            "required": {
+                "type": "requiredUnless"
+            }
+        }
+    },
+    "hobbyInputs": {
+        "minLen": true,
+        "required": false,
+        "$each": {
+            "$iter": {},
+            "$invalid": false,
+            "$dirty": false,
+            "$anyDirty": false,
+            "$error": false,
+            "$anyError": false,
+            "$pending": false,
+            "$params": {}
+        },
+        "$model": [],
+        "$invalid": true,
+        "$dirty": false,
+        "$anyDirty": false,
+        "$error": false,
+        "$anyError": false,
+        "$pending": false,
+        "$params": {
+            "$each": null,
+            "minLen": {
+                "type": "minLength",
+                "min": 2
+            },
+            "required": {
+                "type": "required"
+            }
+        }
+    },
+    "$model": null,
+    "$invalid": true,
+    "$dirty": false,
+    "$anyDirty": false,
+    "$error": false,
+    "$anyError": false,
+    "$pending": false,
+    "$params": {
+        "email": null,
+        "age": null,
+        "password": null,
+        "confirmPassword": null,
+        "terms": null,
+        "hobbyInputs": null
+    }
+}

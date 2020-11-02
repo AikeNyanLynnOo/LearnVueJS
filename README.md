@@ -169,7 +169,7 @@
     - Using set() method within computed property to make changes back to global state
     - Use 'mutations' for centralizing operations and logic on state properties (mapMutations in component)
     - Mutations are synchronous - run in single thread
-    - Use 'actions' (where we may write async code) to get asynchronous behavior before commiting mutations - mapActions in component
+    - Use 'actions' (where we may write async code - eg api request) to get asynchronous behavior before commiting mutations - mapActions in component
     - Default payload for mutations and actions is Mouse Event Object
     - If we want to use payloads, we must pass it when calling function in component
     - Only one payload is allowed, for more, use object
@@ -178,4 +178,4 @@
 
     - mapGetters/mapMutuations/mapActions accept both [] and {}
     - [] is for name mapping where function name is mapped directly
-    - {} is for type mapping where function name is defined by unique type - eg {customkeyk : type}
+    - {} is for type mapping where function name is defined by unique type - eg {customkey : type}
